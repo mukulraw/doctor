@@ -1,6 +1,7 @@
 package com.example.nisha.doctorapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -65,6 +66,16 @@ public class Labs extends Fragment {
         public class Myviewholder extends RecyclerView.ViewHolder{
             public Myviewholder(@NonNull View itemView) {
                 super(itemView);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        Intent i = new Intent(context , LabDetails.class);
+                        context.startActivity(i);
+                    }
+                });
             }
         }
     }

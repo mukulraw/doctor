@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-
     Toolbar  toolbar;
 
     DrawerLayout drawer;
@@ -71,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                 Intent  i = new Intent(MainActivity.this , Profile.class);
+
                 startActivity(i);
+                drawer.closeDrawer(GravityCompat.START);
             }
         });
 
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent  i = new Intent(MainActivity.this , MyBooking.class);
                 startActivity(i);
+                drawer.closeDrawer(GravityCompat.START);
             }
         });
 

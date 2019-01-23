@@ -1,6 +1,7 @@
 package com.example.nisha.doctorapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -78,6 +79,16 @@ public class Doctors extends Fragment {
                 years = itemView.findViewById(R.id.years);
 
                 circleImageView = itemView.findViewById(R.id.circle);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        Intent i = new Intent(context , DoctorProfile.class);
+                        context.startActivity(i);
+                    }
+                });
             }
         }
     }

@@ -9,56 +9,76 @@
     tools:context=".MainActivity"
     tools:openDrawer="start">
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <RelativeLayout
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"></android.support.v7.widget.Toolbar>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="80dp"
+                    android:drawableEnd="@drawable/loaction"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:text="Delhi"
+                    android:textColor="#fff"
+                    android:textSize="16sp" />
+
+
+            </RelativeLayout>
+
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tablayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"></android.support.v7.widget.Toolbar>
+                app:tabIndicatorColor="#FFB1332D"
+                app:tabSelectedTextColor="@color/colorPrimary"
+                app:tabTextColor="@color/colorPrimary">
+
+            </android.support.design.widget.TabLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="80dp"
-                android:drawableEnd="@drawable/loaction"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:text="Delhi"
-                android:textSize="16sp" />
+        </LinearLayout>
 
 
-        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/filter"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="10dp"
+            android:padding="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/blackcircle"/>
 
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabIndicatorColor="#FFB1332D"
-            app:tabSelectedTextColor="@color/colorPrimary"
-            app:tabTextColor="@color/colorPrimary">
+    </RelativeLayout>
 
-        </android.support.design.widget.TabLayout>
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
-
-
-    </LinearLayout>
 
 
     <include
@@ -67,6 +87,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:visibility="visible" />
+
+
+
+
 
 
 </android.support.v4.widget.DrawerLayout>
