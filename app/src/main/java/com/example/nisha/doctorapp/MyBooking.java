@@ -10,6 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyBooking extends AppCompatActivity {
 
@@ -81,9 +86,34 @@ public class MyBooking extends AppCompatActivity {
 
         public class Myviewholder extends RecyclerView.ViewHolder {
 
+            TextView years , genral , name , date , time ;
+
+            RatingBar ratingBar;
+
+            CircleImageView circleImageView;
+
+            Button complete;
+
 
             public Myviewholder(@NonNull View itemView) {
                 super(itemView);
+
+                years = itemView.findViewById(R.id.years);
+
+                genral = itemView.findViewById(R.id.genral);
+
+                name = itemView.findViewById(R.id.name);
+
+                date = itemView.findViewById(R.id.date);
+
+                time = itemView.findViewById(R.id.time);
+
+                circleImageView = itemView.findViewById(R.id.circle);
+
+                complete = itemView.findViewById(R.id.complete);
+
+                ratingBar = itemView.findViewById(R.id.ratingBar);
+
             }
         }
     }

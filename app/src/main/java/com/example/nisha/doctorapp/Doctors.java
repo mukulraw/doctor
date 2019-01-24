@@ -52,7 +52,7 @@ public class Doctors extends Fragment {
         @Override
         public GridAdapter.Myviewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-            View view = LayoutInflater.from(context).inflate(R.layout.grid_list_model , viewGroup , false);
+            View view = LayoutInflater.from(context).inflate(R.layout.dr_list_model , viewGroup , false);
             return new Myviewholder(view);
         }
 

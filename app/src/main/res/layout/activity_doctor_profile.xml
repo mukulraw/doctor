@@ -159,12 +159,15 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="5dp"
                                 android:text="Timing"
+                                android:typeface="monospace"
                                 android:textSize="12sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="5dp"
+                                android:typeface="monospace"
+                                android:id="@+id/timing"
                                 android:text="4:30 am - 6:00pm"
                                 android:textSize="12sp" />
 
@@ -203,6 +206,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="5dp"
+                                android:typeface="monospace"
                                 android:text="Free"
                                 android:textSize="12sp" />
 
@@ -210,6 +214,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="5dp"
+                                android:typeface="monospace"
+                                android:id="@+id/session"
                                 android:text="400 / Session"
                                 android:textSize="12sp" />
 
@@ -228,6 +234,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:padding="2dp"
+                    android:typeface="monospace"
                     android:paddingStart="5dp"
                     android:text="MEDICAL PRACTISE "
                     android:textColor="#000"
@@ -248,6 +255,7 @@
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:paddingStart="5dp"
+                        android:typeface="monospace"
                         android:text="Florida State Hospital"
                         android:textColor="#000" />
 
@@ -256,6 +264,7 @@
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:paddingStart="5dp"
+                        android:typeface="monospace"
                         android:text="Chhattahoochee Gadsden"
                         android:textColor="#868282" />
 
@@ -271,6 +280,7 @@
                     android:layout_marginEnd="10dp"
                     android:padding="2dp"
                     android:paddingStart="5dp"
+                    android:typeface="monospace"
                     android:text="Spectialisations"
                     android:textColor="#000"
                     android:textSize="16sp" />
@@ -282,6 +292,8 @@
                     android:layout_marginEnd="5dp"
                     android:background="#edeaea"
                     android:padding="10dp"
+                    android:id="@+id/special"
+                    android:typeface="monospace"
                     android:text="Colposcopy , Contraceptive management , Endometriosis"
                     android:textColor="#868282" />
 
@@ -294,6 +306,7 @@
                     android:layout_marginEnd="10dp"
                     android:padding="2dp"
                     android:paddingStart="5dp"
+                    android:typeface="monospace"
                     android:text="Address"
                     android:textColor="#000"
                     android:textSize="16sp" />
@@ -305,6 +318,8 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="80dp"
                     android:background="#edeaea"
+                    android:id="@+id/address"
+                    android:typeface="monospace"
                     android:padding="15dp"
                     android:text="B-1/15 , Metro Piller no.764 , Ramapark. 110059, Near Dwarka More Metro India, New Delhi , Delhi 110059."
                     android:textColor="#868282" />
@@ -325,6 +340,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
+        android:typeface="monospace"
         android:background="@drawable/bllebtn"
         android:text="Book an Appointment"
         android:textColor="#fff" />

@@ -23,6 +23,12 @@ public class Signup extends AppCompatActivity {
 
         signup = findViewById(R.id.signup);
         login = findViewById(R.id.login);
+
+        email = findViewById(R.id.email);
+        pass = findViewById(R.id.pass);
+        ph = findViewById(R.id.mobile);
+        cp = findViewById(R.id.cp);
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

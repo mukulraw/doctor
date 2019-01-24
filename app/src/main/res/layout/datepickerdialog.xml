@@ -9,11 +9,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TimePicker
+        <DatePicker
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/timepicker">
-        </TimePicker>
+            android:layout_gravity="center"
+            android:id="@+id/date">
+
+        </DatePicker>
 
 
         <Button
@@ -23,6 +25,7 @@
             android:background="@drawable/bllebtn"
             android:layout_marginTop="18dp"
             android:id="@+id/ok"
+            android:typeface="monospace"
             android:textColor="#fff"
             android:text="OK"
             android:textSize="18sp"

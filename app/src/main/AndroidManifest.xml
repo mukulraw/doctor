@@ -28,7 +28,9 @@
         <activity android:name=".Notification" />
         <activity android:name=".MyBooking" />
         <activity android:name=".LabDetails" />
-        <activity android:name=".DoctorProfile"></activity>
+        <activity android:name=".DoctorProfile" />
+        <activity android:name=".Setting" />
+        <activity android:name=".ChangePassword"></activity>
     </application>
 
 </manifest>
