@@ -37,6 +37,7 @@
                     android:drawableEnd="@drawable/loaction"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
+                    android:id="@+id/location"
                     android:text="Delhi"
                     android:textColor="#fff"
                     android:textSize="16sp" />
@@ -87,7 +88,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 
 

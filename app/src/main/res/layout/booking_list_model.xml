@@ -12,7 +12,6 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-
         app:cardUseCompatPadding="true">
 
 
@@ -21,7 +20,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="#fafafa"
-            android:padding="10dp">
+            android:padding="5dp">
+
 
 
             <LinearLayout
@@ -31,7 +31,7 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/circle"
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="100dp"
                     android:padding="5dp"
                     android:layout_gravity="center_vertical"
@@ -46,10 +46,8 @@
 
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
                         android:orientation="vertical"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp">
@@ -61,14 +59,12 @@
                             android:id="@+id/date"
                             android:paddingStart="5dp"
                             android:typeface="monospace"
-                            android:paddingEnd="5dp"
                             android:text="Date: 6May-2017"
                             android:textSize="12sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
                             android:id="@+id/time"
                             android:typeface="monospace"
                             android:text="Time: 9:00PM"
@@ -131,22 +127,40 @@
                     android:padding="3dp" />
 
                 <Button
-                    android:id="@+id/complete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginEnd="5dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="1dp"
                     android:background="@drawable/bllebtn"
                     android:minWidth="0dp"
+                    android:visibility="gone"
                     android:minHeight="0dp"
-                    android:paddingStart="10dp"
+                    android:paddingStart="12dp"
                     android:typeface="monospace"
-                    android:paddingTop="6dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="6dp"
+                    android:paddingTop="7dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="7dp"
                     android:text="Completed"
                     android:textColor="#fff" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:text="Completed"
+                    android:padding="5dp"
+                    android:background="@drawable/bllebtn"
+                    android:textColor="#fff"
+                    android:paddingStart="10dp"
+                    android:id="@+id/complete"
+                    android:layout_marginTop="7dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
+                    android:layout_marginEnd="10dp"/>
+
 
             </LinearLayout>
 

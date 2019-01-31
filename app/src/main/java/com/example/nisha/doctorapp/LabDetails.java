@@ -9,15 +9,29 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.example.nisha.doctorapp.DoctorsPOJO.DoctorBean;
+import com.example.nisha.doctorapp.LabDetailsPOJO.LabDetailBean;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class LabDetails extends AppCompatActivity {
 
@@ -30,14 +44,16 @@ public class LabDetails extends AppCompatActivity {
 
     CircleImageView circleImageView;
 
-    private Calendar calendar;
-    private String format = "";
+    ProgressBar bar;
 
+    String imag , nam , timin , fe , add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lab_details);
+
+        bar = findViewById(R.id.progress);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,6 +80,22 @@ public class LabDetails extends AppCompatActivity {
         timing = findViewById(R.id.timing);
 
         free = findViewById(R.id.free);
+        name = findViewById(R.id.name);
+
+
+
+        nam = getIntent().getStringExtra("name");
+        timin = getIntent().getStringExtra("timing");
+        fe = getIntent().getStringExtra("fee");
+        add = getIntent().getStringExtra("address");
+        imag = getIntent().getStringExtra("image");
+
+
+        name.setText(nam);
+        timing.setText(timin);
+        free.setText(fe);
+        address.setText(add);
+        //circleImageView.setImageBitmap(imag);
 
         book.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +111,6 @@ public class LabDetails extends AppCompatActivity {
                 Spinner spinner = dialog.findViewById(R.id.spinner);
                 ImageView close = dialog.findViewById(R.id.close);
                 Button ok = dialog.findViewById(R.id.ok);
-
-
 
 
                 List<String> li = new ArrayList<>();
@@ -99,7 +129,7 @@ public class LabDetails extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                      dialog.dismiss();
+                        dialog.dismiss();
 
                     }
                 });
@@ -107,7 +137,7 @@ public class LabDetails extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                     dialog.dismiss();
+                        dialog.dismiss();
 
                     }
                 });
@@ -123,7 +153,6 @@ public class LabDetails extends AppCompatActivity {
 
                         final TimePicker timePicker = dialog.findViewById(R.id.timepicker);
                         Button ok = dialog.findViewById(R.id.ok);
-
 
 
                         ok.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +199,6 @@ public class LabDetails extends AppCompatActivity {
                                 date.setText(f);
 
 
-
                                 dialog.dismiss();
 
 
@@ -184,5 +212,62 @@ public class LabDetails extends AppCompatActivity {
 
             }
         });
+
+
+
+
+       /* bar.setVisibility(View.VISIBLE);
+
+        Bean b = (Bean)getApplicationContext();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(b.BaseUrl)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AllApiInterface cr = retrofit.create(AllApiInterface.class);
+
+        Call<LabDetailBean> call = cr.labdetail();
+
+        call.enqueue(new Callback<LabDetailBean>() {
+            @Override
+            public void onResponse(Call<LabDetailBean> call, Response<LabDetailBean> response) {
+
+                if (Objects.equals(response.body().getStatus() , "1")){
+
+
+                    name.setText(response.body().getData().get(0).getName());
+
+                    timing.setText(response.body().getData().get(0).getStartTime() + "-" + response.body().getData().get(0).getEndTime());
+
+                    free.setText(response.body().getData().get(0).getFee());
+
+                    DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).cacheInMemory(true).resetViewBeforeLoading(false).build();
+                    ImageLoader loader = ImageLoader.getInstance();
+
+                    loader.displayImage(response.body().getData().get(0).getImage() , circleImageView , options);
+
+                    address.setText(response.body().getData().get(0).getAddress() + "," + response.body().getData().get(0).getCity() + "," + response.body().getData().get(0).getState());
+
+
+
+                }else {
+
+                    Toast.makeText(LabDetails.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                bar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<LabDetailBean> call, Throwable t) {
+
+                bar.setVisibility(View.GONE);
+
+            }
+        });
+
+*/
     }
 }

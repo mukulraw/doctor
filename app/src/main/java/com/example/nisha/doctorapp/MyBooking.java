@@ -11,8 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -26,10 +30,18 @@ public class MyBooking extends AppCompatActivity {
 
     Toolbar toolbar;
 
+   // List<String>list;
+
+    ProgressBar bar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_booking);
+
+     //   list = new ArrayList<>();
+
+        bar = findViewById(R.id.progress);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -47,21 +59,30 @@ public class MyBooking extends AppCompatActivity {
 
 
         grid = findViewById(R.id.grid);
+
         manager = new GridLayoutManager(getApplicationContext() , 1);
-        adapter = new BookingAdapter(this);
+
+        adapter = new BookingAdapter(this );
+
         grid.setAdapter(adapter);
+
         grid.setLayoutManager(manager);
 
 
 
     }
+
+
     public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.Myviewholder>{
 
         Context context;
 
-        public BookingAdapter(Context context){
+      //  List<String>list = new ArrayList<>();
+
+        public BookingAdapter(Context context ){
 
             this.context = context;
+           // this.list = list;
         }
 
 
@@ -77,7 +98,17 @@ public class MyBooking extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull BookingAdapter.Myviewholder myviewholder, int i) {
 
+
+          //  String item = list.get(i);
+
+
         }
+
+      /*  public void setgrid(List<String>list){
+
+            this.list = list;
+            notifyDataSetChanged();
+        }*/
 
         @Override
         public int getItemCount() {
@@ -92,7 +123,7 @@ public class MyBooking extends AppCompatActivity {
 
             CircleImageView circleImageView;
 
-            Button complete;
+            TextView complete;
 
 
             public Myviewholder(@NonNull View itemView) {

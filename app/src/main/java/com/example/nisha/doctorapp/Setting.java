@@ -1,6 +1,7 @@
 package com.example.nisha.doctorapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ public class Setting extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         logout = findViewById(R.id.textView75);
+
         change= findViewById(R.id.textView76);
 
         change.setOnClickListener(new View.OnClickListener() {
@@ -34,9 +36,9 @@ public class Setting extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 Intent i = new Intent(Setting.this , Login.class);
                 startActivity(i);
+                finishAffinity();
             }
         });
 

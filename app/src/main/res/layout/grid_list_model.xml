@@ -54,9 +54,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/hour"
+                    android:id="@+id/timing"
                     android:padding="3dp"
                     android:typeface="monospace"
+                    android:paddingStart="5dp"
                     android:text="Open hours : 9.00am to 10.00pm "/>
 
                 <TextView
@@ -65,7 +66,7 @@
                     android:padding="3dp"
                     android:typeface="monospace"
                     android:id="@+id/years"
-                    android:text="21+ Years old"/>
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -73,6 +74,7 @@
                     android:layout_gravity="end"
                     android:gravity="end"
                     android:textSize="12sp"
+                    android:id="@+id/mor"
                     android:padding="3dp"
                     android:typeface="monospace"
                     android:textColor="#cdcdcd"

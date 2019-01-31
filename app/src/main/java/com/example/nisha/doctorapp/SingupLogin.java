@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 public class SingupLogin extends AppCompatActivity {
 
-
     Button sign , login;
+
+    ProgressBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +20,10 @@ public class SingupLogin extends AppCompatActivity {
         setContentView(R.layout.activity_singup_login);
 
         login = findViewById(R.id.login);
+
         sign = findViewById(R.id.signup);
+
+        bar = findViewById(R.id.progress);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,7 +38,6 @@ public class SingupLogin extends AppCompatActivity {
         sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 Intent i = new Intent(SingupLogin.this , Signup.class);
                 startActivity(i);

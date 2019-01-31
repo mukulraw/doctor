@@ -10,6 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Notification extends AppCompatActivity {
 
@@ -22,12 +27,16 @@ public class Notification extends AppCompatActivity {
 
     Toolbar toolbar;
 
+    ProgressBar bar;
+
+  //  List<String> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
-
+      //  list = new ArrayList<>();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -43,9 +52,11 @@ public class Notification extends AppCompatActivity {
 
         grid = findViewById(R.id.grid);
 
-        manager = new GridLayoutManager(getApplicationContext() , 1);
+        bar = findViewById(R.id.progress);
 
-        adapter = new NotiAdapter(this);
+        manager = new GridLayoutManager(getApplicationContext(), 1);
+
+        adapter = new NotiAdapter(this );
 
         grid.setLayoutManager(manager);
 
@@ -53,12 +64,15 @@ public class Notification extends AppCompatActivity {
 
     }
 
-    public class NotiAdapter extends RecyclerView.Adapter<NotiAdapter.Myviewholder>{
+    public class NotiAdapter extends RecyclerView.Adapter<NotiAdapter.Myviewholder> {
 
         Context context;
 
-        public NotiAdapter(Context context){
+        //List<String>list = new ArrayList<>();
+
+        public NotiAdapter(Context context) {
             this.context = context;
+           // this.list = list;
         }
 
 
@@ -67,24 +81,41 @@ public class Notification extends AppCompatActivity {
         public NotiAdapter.Myviewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
 
-            View view = LayoutInflater.from(context).inflate(R.layout.noti_list_model , viewGroup , false);
+            View view = LayoutInflater.from(context).inflate(R.layout.noti_list_model, viewGroup, false);
             return new Myviewholder(view);
+
+
         }
 
         @Override
         public void onBindViewHolder(@NonNull NotiAdapter.Myviewholder myviewholder, int i) {
 
+
+          //  String item = list.get(i);
+          //  myviewholder.name.setText("");
+          //  myviewholder.timing.setText("");
+
         }
 
+      /*  public void setgrid(List<String>list){
+            this.list = list;
+            notifyDataSetChanged();
+        }
+*/
         @Override
         public int getItemCount() {
             return 10;
         }
 
-        public class Myviewholder extends RecyclerView.ViewHolder{
+        public class Myviewholder extends RecyclerView.ViewHolder {
+
+            TextView name, timing;
 
             public Myviewholder(@NonNull View itemView) {
                 super(itemView);
+
+                name = itemView.findViewById(R.id.name);
+                timing = itemView.findViewById(R.id.timing);
             }
         }
     }

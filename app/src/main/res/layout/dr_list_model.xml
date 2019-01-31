@@ -45,7 +45,6 @@
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dr.Gagandeep Kaur"
                     android:paddingStart="5dp"
                     android:textColor="#000"
                     android:textSize="18sp"
@@ -59,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
                     android:typeface="monospace"
-                    android:text="General Obstetrics and gynecology" />
+                    />
 
                 <TextView
                     android:id="@+id/eng"
@@ -67,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
                     android:typeface="monospace"
-                    android:text="English" />
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/years"
@@ -75,14 +74,14 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
                     android:typeface="monospace"
-                    android:text="21+ Years of Experience" />
+                    />
 
                 <RatingBar
                     android:id="@+id/ratingBar"
                     style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:paddingStart="5dp"
                     android:padding="3dp" />
 
 
@@ -93,12 +92,13 @@
                     android:gravity="end"
                     android:textSize="12sp"
                     android:padding="3dp"
+                    android:id="@+id/mor"
                     android:typeface="monospace"
                     android:textColor="#cdcdcd"
+
                     android:text="Dwarka mor"/>
 
             </LinearLayout>
-
 
 
 
