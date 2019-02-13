@@ -31,12 +31,16 @@ public class Notification extends AppCompatActivity {
 
   //  List<String> list;
 
+    ConnectionDetector cd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
       //  list = new ArrayList<>();
+
+        cd = new ConnectionDetector(this);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

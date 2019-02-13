@@ -35,20 +35,20 @@ public class Splash extends AppCompatActivity {
 
     SharedPreferences.Editor edit;
 
-    ConnectionDetector cd;
-
     String[] PERMISSIONS = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.CAMERA};
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     ProgressBar bar;
+
+    ConnectionDetector cd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-
-        cd = new ConnectionDetector(this);
+        cd = new ConnectionDetector(Splash.this);
 
         pref = getSharedPreferences("pref", Context.MODE_PRIVATE);
 
@@ -133,7 +133,9 @@ public class Splash extends AppCompatActivity {
                         .build();
 
                 AllApiInterface cr = retrofit.create(AllApiInterface.class);
+
                 Call<LoginBean> call = cr.login(e, p);
+
                 call.enqueue(new Callback<LoginBean>() {
                     @Override
                     public void onResponse(Call<LoginBean> call, Response<LoginBean> response) {
@@ -143,10 +145,13 @@ public class Splash extends AppCompatActivity {
                             Bean b = (Bean) getApplicationContext();
 
                             b.userid = response.body().getData().getUserId();
+
                             edit.apply();
 
                             Intent i = new Intent(Splash.this , Location.class);
+
                             startActivity(i);
+
                             finish();
 
 

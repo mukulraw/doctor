@@ -1,14 +1,20 @@
 package com.example.nisha.doctorapp;
 
 import com.example.nisha.doctorapp.ChangePasswordPOJO.ChangeBean;
+import com.example.nisha.doctorapp.DoctorInsertPOJO.DoctorInsertBean;
 import com.example.nisha.doctorapp.DoctorsPOJO.DoctorBean;
 import com.example.nisha.doctorapp.EditProfilePOJO.EditProfileBean;
 import com.example.nisha.doctorapp.ForgetPOJO.ForgetBean;
+import com.example.nisha.doctorapp.FreeSlotLabsPOJO.FreeLAbsBean;
+import com.example.nisha.doctorapp.FreeSlotPOJO.FreeslotBean;
+import com.example.nisha.doctorapp.GetAppointmentPOJO.AppointmentBean;
 import com.example.nisha.doctorapp.LabDetailsPOJO.LabDetailBean;
 import com.example.nisha.doctorapp.LocationPOJO.LocationBean;
 import com.example.nisha.doctorapp.LoginPOJO.LoginBean;
 import com.example.nisha.doctorapp.ProfilePOJO.ProfileBean;
+import com.example.nisha.doctorapp.ScheduleLabPOJO.SchedulelabBean;
 import com.example.nisha.doctorapp.SignupPOJO.SignupBean;
+import com.example.nisha.doctorapp.TestPOJO.TestBean;
 import com.example.nisha.doctorapp.UpdateProfilePOJO.UpdateProfileBean;
 
 import okhttp3.MultipartBody;
@@ -91,8 +97,53 @@ public interface AllApiInterface {
     Call<LabDetailBean> labdetail();
 
 
+    @Multipart
+    @POST ("doctor/api/getDoctorSlot.php")
+    Call<FreeslotBean> free(
+            @Part("doctor_id") String userid,
+            @Part("date") String sdlf
+    );
 
 
+
+    @Multipart
+    @POST ("doctor/api/ScheduleAnAppointment.php")
+    Call<DoctorInsertBean> insert(
+            @Part("doctor_id") String userid,
+            @Part("user_id") String sdlf ,
+            @Part("date") String f ,
+            @Part("slot_id") String sd
+    );
+
+
+
+    @Multipart
+    @POST ("doctor/api/GetTestSlot.php")
+    Call<FreeLAbsBean> freelab(
+            @Part("testId") String test,
+            @Part("date") String date
+    );
+
+    @Multipart
+    @POST ("doctor/api/ScheduleLabAppointment.php")
+    Call<SchedulelabBean> schedule(
+            @Part("testId") String userid,
+            @Part("user_id") String sdlf ,
+            @Part("date") String f ,
+            @Part("slot_id") String sd
+    );
+
+
+
+    @GET("doctor/api/master_test.php")
+    Call<TestBean> test();
+
+
+    @Multipart
+    @POST ("doctor/api/GetAppointmentHistory.php")
+    Call<AppointmentBean> appointment(
+            @Part("user_id") String userid
+    );
 
 
 }

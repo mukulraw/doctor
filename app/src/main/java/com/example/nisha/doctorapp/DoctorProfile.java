@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,8 +16,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nisha.doctorapp.DoctorInsertPOJO.DoctorInsertBean;
 import com.example.nisha.doctorapp.DoctorsPOJO.DoctorBean;
 import com.example.nisha.doctorapp.EditProfilePOJO.EditProfileBean;
+import com.example.nisha.doctorapp.FreeSlotPOJO.Datum;
+import com.example.nisha.doctorapp.FreeSlotPOJO.FreeslotBean;
+import com.example.nisha.doctorapp.LocationPOJO.LocationBean;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -48,7 +53,12 @@ public class DoctorProfile extends AppCompatActivity {
 
     ConnectionDetector cd;
 
-    String nam, des, exp, sess, add, hospi, timin , imag , rat;
+    String nam, des, exp, sess, add, hospi, timin , imag , rat , sp , id;
+
+    String bb = "";
+
+
+    String l = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +115,8 @@ public class DoctorProfile extends AppCompatActivity {
         imag = getIntent().getStringExtra("image");
         rat = getIntent().getStringExtra("rating");
         imag = getIntent().getStringExtra("image");
+        sp = getIntent().getStringExtra("spec");
+        id = getIntent().getStringExtra("id");
 
 
         name.setText(nam);
@@ -114,15 +126,16 @@ public class DoctorProfile extends AppCompatActivity {
         session.setText(sess);
         address.setText(add);
         hospital.setText(hospi);
+        special.setText(sp);
         ratingBar.setRating(Float.parseFloat(rat));
-     //   circleImageView.setImageBitmap(imag);
+       // circleImageView.setImageBitmap(imag);
 
 
 
-       /* DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).cacheInMemory(true).resetViewBeforeLoading(false).build();
+        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).cacheInMemory(true).resetViewBeforeLoading(false).build();
         ImageLoader loader = ImageLoader.getInstance();
-        loader.displayImage(imag.g, imag, options);
-*/
+        loader.displayImage(imag, circleImageView, options);
+
 
 
         book.setOnClickListener(new View.OnClickListener() {
@@ -134,35 +147,61 @@ public class DoctorProfile extends AppCompatActivity {
                 dialog.setCancelable(true);
                 dialog.show();
 
-
                 final TextView date = dialog.findViewById(R.id.date);
 
                 ImageView close = dialog.findViewById(R.id.close);
 
-                Spinner spinner = dialog.findViewById(R.id.spinner);
+                final Spinner spinner = dialog.findViewById(R.id.spinner);
 
-                List<String> li = new ArrayList<>();
-                li = new ArrayList<>();
-
-                li.add("08:30m - 09:00pm");
-                li.add("09:30m - 09:00pm");
-                li.add("10:30m - 09:00pm");
-                li.add("08:30m - 09:00pm");
-
-                ArrayAdapter dataAdapter = new ArrayAdapter(DoctorProfile.this, android.R.layout.simple_spinner_item, li);
-
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                spinner.setAdapter(dataAdapter);
+                final ProgressBar progress = dialog.findViewById(R.id.progress);
 
                 Button ok = dialog.findViewById(R.id.ok);
-
 
                 ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        dialog.dismiss();
+                        progress.setVisibility(View.VISIBLE);
+
+                        Bean b = (Bean) getApplicationContext();
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(b.BaseUrl)
+                                .addConverterFactory(ScalarsConverterFactory.create())
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        AllApiInterface cr = retrofit.create(AllApiInterface.class);
+
+                        Call<DoctorInsertBean> call = cr.insert( id , b.userid , date.getText().toString() , bb);
+                        call.enqueue(new Callback<DoctorInsertBean>() {
+                            @Override
+                            public void onResponse(Call<DoctorInsertBean> call, Response<DoctorInsertBean> response) {
+
+
+                                if (Objects.equals(response.body().getStatus() , "1")){
+
+                                    Toast.makeText(DoctorProfile.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+
+                                }else {
+
+                                    Toast.makeText(DoctorProfile.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                progress.setVisibility(View.GONE);
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(Call<DoctorInsertBean> call, Throwable t) {
+
+                                progress.setVisibility(View.GONE);
+
+                            }
+                        });
+
+
                     }
                 });
                 close.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +212,7 @@ public class DoctorProfile extends AppCompatActivity {
                     }
                 });
 
+
                 date.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -182,9 +222,23 @@ public class DoctorProfile extends AppCompatActivity {
                         dialog.setCancelable(true);
                         dialog.show();
 
+                        List<String> lis = new ArrayList<>();
+                        List<String> li = new ArrayList<>();
+
+
+                        li = new ArrayList<>();
+                        lis = new ArrayList<>();
+
+
                         final DatePicker picker = dialog.findViewById(R.id.date);
+                        picker.setMinDate(System.currentTimeMillis());
+
 
                         Button ok = dialog.findViewById(R.id.ok);
+                        final ProgressBar progress = dialog.findViewById(R.id.progress);
+
+                        final List<String> finalLi = li;
+                        final List<String> finalLis = lis;
 
                         ok.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -199,7 +253,80 @@ public class DoctorProfile extends AppCompatActivity {
 
                                 date.setText(f);
 
-                                dialog.dismiss();
+
+                                progress.setVisibility(View.VISIBLE);
+
+                                Bean b = (Bean) getApplicationContext();
+
+                                Retrofit retrofit = new Retrofit.Builder()
+                                        .baseUrl(b.BaseUrl)
+                                        .addConverterFactory(ScalarsConverterFactory.create())
+                                        .addConverterFactory(GsonConverterFactory.create())
+                                        .build();
+
+                                AllApiInterface cr = retrofit.create(AllApiInterface.class);
+
+                                Call<FreeslotBean> call = cr.free( id,date.getText().toString());
+
+                                call.enqueue(new Callback<FreeslotBean>() {
+                                    @Override
+                                    public void onResponse(Call<FreeslotBean> call, Response<FreeslotBean> response) {
+
+
+                                        if (response.body().getStatus().equals("1")) {
+
+
+                                            for (int i = 0; i < response.body().getData().size(); i++) {
+
+
+                                                finalLi.add(response.body().getData().get(i).getTimeSlot());
+                                                finalLis.add(response.body().getData().get(i).getId());
+                                            }
+
+                                            //list.clear();
+                                            //li.clear();
+
+                                            ArrayAdapter dataAdapter = new ArrayAdapter(DoctorProfile.this, android.R.layout.simple_spinner_item, finalLi);
+
+                                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                                            spinner.setAdapter(dataAdapter);
+
+
+                                        }
+
+                                        progress.setVisibility(View.GONE);
+
+                                        dialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<FreeslotBean> call, Throwable t) {
+
+                                        progress.setVisibility(View.GONE);
+
+                                    }
+                                });
+
+
+                                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                                      bb = finalLis.get(position);
+
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+
+
+                                    }
+                                });
+
+
 
 
                             }
@@ -211,61 +338,6 @@ public class DoctorProfile extends AppCompatActivity {
 
             }
         });
-       /* bar.setVisibility(View.VISIBLE);
 
-        Bean b = (Bean) getApplicationContext();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(b.BaseUrl)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        AllApiInterface cr = retrofit.create(AllApiInterface.class);
-
-        Call<DoctorBean> call = cr.doctorprofile();
-
-        call.enqueue(new Callback<DoctorBean>() {
-            @Override
-            public void onResponse(Call<DoctorBean> call, Response<DoctorBean> response) {
-
-                if (Objects.equals(response.body().getStatus(), "1")) {
-
-
-                    name.setText(response.body().getData().get(0).getName());
-                    yr.setText(response.body().getData().get(0).getExperience());
-                    genral.setText(response.body().getData().get(0).getDesignation());
-                    timing.setText(response.body().getData().get(0).getStartTime() + "-" + response.body().getData().get(0).getEndTime());
-                    session.setText(response.body().getData().get(0).getFee() + " / Session");
-
-                    DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).cacheInMemory(true).resetViewBeforeLoading(false).build();
-                    ImageLoader loader = ImageLoader.getInstance();
-
-                    loader.displayImage(response.body().getData().get(0).getImage(), circleImageView, options);
-
-                    address.setText(response.body().getData().get(0).getAddress() + response.body().getData().get(0).getCity() + response.body().getData().get(0).getState());
-
-                    ratingBar.setRating(Float.parseFloat(response.body().getData().get(0).getRating()));
-
-                    hospital.setText(response.body().getData().get(0).getHospital());
-
-
-                } else {
-
-                    Toast.makeText(DoctorProfile.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-                bar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<DoctorBean> call, Throwable t) {
-
-                bar.setVisibility(View.GONE);
-
-            }
-        });
-
-*/
     }
 }

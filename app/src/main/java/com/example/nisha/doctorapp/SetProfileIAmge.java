@@ -60,15 +60,19 @@ public class SetProfileIAmge extends AppCompatActivity {
 
     CircularImageView circularImageView;
 
+    ConnectionDetector cd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_profile_iamge);
 
+        cd = new ConnectionDetector(SetProfileIAmge.this);
 
         takephoto = findViewById(R.id.button4);
 
         proceed = findViewById(R.id.textView85);
+
         circularImageView = findViewById(R.id.view2);
 
         bar = findViewById(R.id.progressBar4);
@@ -134,56 +138,66 @@ public class SetProfileIAmge extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                MultipartBody.Part body = null;
-
-                if (file != null)
-                {
-                    RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-
-                    body = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
-
-                    bar.setVisibility(View.VISIBLE);
-
-                    Bean b = (Bean)getApplicationContext();
-
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl(b.BaseUrl)
-                            .addConverterFactory(ScalarsConverterFactory.create())
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
-
-                    AllApiInterface cr = retrofit.create(AllApiInterface.class);
-
-                    Call<UpdateProfileBean> call = cr.updatebean(b.userid, body);
-                    call.enqueue(new Callback<UpdateProfileBean>() {
-                        @Override
-                        public void onResponse(Call<UpdateProfileBean> call, Response<UpdateProfileBean> response) {
+                if (cd.isConnectingToInternet()){
 
 
+                    MultipartBody.Part body = null;
+
+                    if (file != null)
+                    {
+                        RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+                        body = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
+
+                        bar.setVisibility(View.VISIBLE);
+
+                        Bean b = (Bean)getApplicationContext();
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(b.BaseUrl)
+                                .addConverterFactory(ScalarsConverterFactory.create())
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        AllApiInterface cr = retrofit.create(AllApiInterface.class);
+
+                        Call<UpdateProfileBean> call = cr.updatebean(b.userid, body);
+                        call.enqueue(new Callback<UpdateProfileBean>() {
+                            @Override
+                            public void onResponse(Call<UpdateProfileBean> call, Response<UpdateProfileBean> response) {
 
 
-                                Intent intent = new Intent(SetProfileIAmge.this , MainActivity.class);
+
+
+                                Intent intent = new Intent(SetProfileIAmge.this , Location.class);
                                 startActivity(intent);
                                 finishAffinity();
 
 
 
 
-                            bar.setVisibility(View.GONE);
+                                bar.setVisibility(View.GONE);
 
-                        }
+                            }
 
-                        @Override
-                        public void onFailure(Call<UpdateProfileBean> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<UpdateProfileBean> call, Throwable t) {
 
-                            bar.setVisibility(View.GONE);
+                                bar.setVisibility(View.GONE);
 
-                        }
-                    });
-                }
-                else
-                {
-                    Toast.makeText(SetProfileIAmge.this, "Please upload an image", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Toast.makeText(SetProfileIAmge.this, "Please upload an image", Toast.LENGTH_SHORT).show();
+                    }
+
+
+
+                }else {
+
+                    Toast.makeText(SetProfileIAmge.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
                 }
 
 

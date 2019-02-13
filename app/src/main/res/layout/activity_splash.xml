@@ -17,6 +17,8 @@
             android:layout_height="match_parent"
             android:src="@drawable/logo"
            android:padding="100dp"/>
+
+
     </LinearLayout>
 
 

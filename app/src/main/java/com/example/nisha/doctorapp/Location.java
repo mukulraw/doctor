@@ -29,6 +29,7 @@ public class Location extends AppCompatActivity {
     Spinner spinner;
 
     List<String> list = new ArrayList<>();
+
     List<String> lid = new ArrayList<>();
 
     String li;
@@ -44,19 +45,15 @@ public class Location extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
-
         list = new ArrayList<>();
         lid = new ArrayList<>();
-
 
         spinner = findViewById(R.id.spinner);
         progress = findViewById(R.id.progress);
 
-
         Bean b = (Bean) getApplicationContext();
 
         progress.setVisibility(View.VISIBLE);
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(b.BaseUrl)
                 .addConverterFactory(ScalarsConverterFactory.create())
@@ -65,7 +62,7 @@ public class Location extends AppCompatActivity {
 
         AllApiInterface cr = retrofit.create(AllApiInterface.class);
 
-       Call<LocationBean> call = cr.getLocations();
+        Call<LocationBean> call = cr.getLocations();
 
         call.enqueue(new Callback<LocationBean>() {
             @Override
@@ -105,7 +102,6 @@ public class Location extends AppCompatActivity {
         });
 
 
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -123,17 +119,20 @@ public class Location extends AppCompatActivity {
         });
 
         submit = findViewById(R.id.submit);
-       submit.setOnClickListener(new View.OnClickListener() {
+
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (sel.length() > 0) {
-                    SharePreferenceUtils.getInstance().saveString("location" , sel);
+                    SharePreferenceUtils.getInstance().saveString("location", sel);
                     Intent i = new Intent(Location.this, MainActivity.class);
-                    i.putExtra("lname" , spinner.getSelectedItem().toString());
+                    i.putExtra("lname", spinner.getSelectedItem().toString());
                     startActivity(i);
                     finish();
+
                 } else {
+
                     Toast.makeText(Location.this, "Please choose a location", Toast.LENGTH_SHORT).show();
                 }
 

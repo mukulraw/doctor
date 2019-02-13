@@ -27,7 +27,6 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/dd"
                 />
 
             <LinearLayout
@@ -94,9 +93,7 @@
                     android:padding="3dp"
                     android:id="@+id/mor"
                     android:typeface="monospace"
-                    android:textColor="#cdcdcd"
-
-                    android:text="Dwarka mor"/>
+                    android:textColor="#cdcdcd"/>
 
             </LinearLayout>
 

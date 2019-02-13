@@ -24,6 +24,7 @@ public class Utils {
     }
 
     public static boolean isValidMail(String email) {
+
         boolean check;
         Pattern p;
         Matcher m;

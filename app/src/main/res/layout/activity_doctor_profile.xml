@@ -229,7 +229,7 @@
                     android:layout_marginEnd="10dp"
                     android:padding="2dp"
                     android:paddingStart="5dp"
-                    android:text="MEDICAL PRACTISE "
+                    android:text="MEDICAL PRACTICE "
                     android:textColor="#000"
                     android:textSize="16sp"
                     android:typeface="monospace" />
@@ -245,12 +245,14 @@
 
 
                     <TextView
-                        android:id="@+id/hospital"
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
+                        android:text="Hospital"
                         android:paddingStart="5dp"
                         android:textColor="#000"
+                        android:visibility="gone"
                         android:typeface="monospace" />
 
                     <TextView
@@ -258,7 +260,7 @@
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:paddingStart="5dp"
-                        android:text="Chhattahoochee Gadsden"
+                        android:id="@+id/hospital"
                         android:textColor="#868282"
                         android:typeface="monospace" />
 
@@ -287,7 +289,6 @@
                     android:layout_marginEnd="5dp"
                     android:background="#edeaea"
                     android:padding="10dp"
-                    android:text="Colposcopy , Contraceptive management , Endometriosis"
                     android:textColor="#868282"
                     android:typeface="monospace" />
 

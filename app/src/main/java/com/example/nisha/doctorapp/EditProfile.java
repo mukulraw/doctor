@@ -132,6 +132,7 @@ public class EditProfile extends AppCompatActivity {
 
                             name.setText("");
                             age.setText("");
+                            finish();
 
 
                         }else {

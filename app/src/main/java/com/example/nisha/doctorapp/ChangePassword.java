@@ -1,5 +1,7 @@
 package com.example.nisha.doctorapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,11 +34,17 @@ public class ChangePassword extends AppCompatActivity {
     ProgressBar bar;
 
     ConnectionDetector cd;
+    SharedPreferences pref;
+    SharedPreferences.Editor edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+
+        pref = getSharedPreferences("pref" , Context. MODE_PRIVATE);
+
+        edit = pref.edit();
 
         cd = new ConnectionDetector(ChangePassword.this);
 
@@ -77,9 +85,13 @@ public class ChangePassword extends AppCompatActivity {
 
                                             Toast.makeText(ChangePassword.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
 
-                                            finish();
+                                            edit.putString("password" , np.getText().toString());
+                                            edit.apply();
+
                                             np.setText("");
                                             cp.setText("");
+                                            finish();
+
 
                                         }else {
                                             Toast.makeText(ChangePassword.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();

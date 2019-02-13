@@ -19,12 +19,36 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:typeface="monospace"
+            android:textColor="#000"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="Date" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/date"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/stroke"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#000"
             android:typeface="monospace"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="10dp"
             android:paddingStart="18sp"
             android:layout_marginBottom="10dp"
             android:textSize="16sp"
@@ -49,28 +73,7 @@
             </Spinner>
         </RelativeLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:typeface="monospace"
-            android:textColor="#000"
-            android:layout_marginTop="18dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:text="Date" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:id="@+id/date"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/stroke"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -89,5 +92,13 @@
 
 
     </LinearLayout>
+
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:id="@+id/progress"/>
 
 </RelativeLayout>

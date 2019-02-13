@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView filter;
 
-
     TextView location;
 
     String lname;
@@ -84,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         layout.addTab(layout.newTab().setText("DOCTORS"));
         layout.addTab(layout.newTab().setText("LABS"));
+        //layout.addTab(layout.newTab().setText("HOSPITAl"));
 
         adapter = new PagerAdapter(getSupportFragmentManager(), 2);
         pager.setAdapter(adapter);
@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         layout.getTabAt(0).setText("DOCTORS");
         layout.getTabAt(1).setText("LABS");
+        //layout.getTabAt(1).setText("HOSPITAl");
 
         profile = findViewById(R.id.profile);
         booking = findViewById(R.id.booking);
@@ -116,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
                 progress = findViewById(R.id.progress);
 
-
                 Bean b = (Bean) getApplicationContext();
 
                 progress.setVisibility(View.VISIBLE);
@@ -136,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<LocationBean> call, Response<LocationBean> response) {
 
-                        LocationAdapter adapter = new LocationAdapter(MainActivity.this , response.body().getData() , dialog);
-                        GridLayoutManager manager = new GridLayoutManager(MainActivity.this , 1);
+                        LocationAdapter adapter = new LocationAdapter(MainActivity.this, response.body().getData(), dialog);
+                        GridLayoutManager manager = new GridLayoutManager(MainActivity.this, 1);
                         grid.setAdapter(adapter);
                         grid.setLayoutManager(manager);
 
@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
 
 
         filter.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 lit.add("Mansha");
 
 
-                ArrayAdapter dataAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, lit);
+                ArrayAdapter dataAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, lit);
 
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -195,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 lit1.add("Ear");
                 lit1.add("Teeth");
 
-                ArrayAdapter dataAdapter1 = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, lit1);
+                ArrayAdapter dataAdapter1 = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, lit1);
 
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -236,10 +235,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 Intent i = new Intent(MainActivity.this, MyBooking.class);
                 startActivity(i);
                 drawer.closeDrawer(GravityCompat.START);
+
+
             }
         });
 
@@ -300,33 +300,31 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         lname = getIntent().getStringExtra("lname");
-
         location.setText(lname);
 
     }
 
-    class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder>
-    {
+    class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
 
         Context context;
         List<Datum> list = new ArrayList<>();
         Dialog dialog;
 
-        public LocationAdapter(Context context , List<Datum> list , Dialog dialog)
-        {
+        public LocationAdapter(Context context, List<Datum> list, Dialog dialog) {
             this.context = context;
             this.list = list;
             this.dialog = dialog;
         }
 
 
-
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.location_list_model , viewGroup , false);
+
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.location_list_model, viewGroup, false);
             return new ViewHolder(view);
+
         }
 
         @Override
@@ -336,12 +334,11 @@ public class MainActivity extends AppCompatActivity {
 
             viewHolder.text.setText(item.getName());
 
-
             viewHolder.text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    SharePreferenceUtils.getInstance().saveString("location" , item.getId());
+                    SharePreferenceUtils.getInstance().saveString("location", item.getId());
                     location.setText(item.getName());
                     dialog.dismiss();
 
@@ -356,8 +353,7 @@ public class MainActivity extends AppCompatActivity {
             return list.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder
-        {
+        class ViewHolder extends RecyclerView.ViewHolder {
             TextView text;
 
             public ViewHolder(@NonNull View itemView) {

@@ -27,11 +27,14 @@ public class Forget extends AppCompatActivity {
 
     Button btn;
 
+    ConnectionDetector cd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget);
+
+        cd = new ConnectionDetector(Forget.this);
 
         email = findViewById(R.id.editText);
 
@@ -42,6 +45,14 @@ public class Forget extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (cd.isConnectingToInternet()){
+
+
+
+                }else {
+                    Toast.makeText(Forget.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                }
 
                 String e = email.getText().toString();
 

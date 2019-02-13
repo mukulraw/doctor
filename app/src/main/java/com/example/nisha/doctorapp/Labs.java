@@ -139,17 +139,48 @@ public class Labs extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull LabAdapter.Myviewholder myviewholder, int i) {
 
-            Datum item = list.get(i);
-            myviewholder.name.setText(item.getName());
-            //myviewholder.yrs.setText(item.get());
-            myviewholder.timing.setText("Open hour : " + item.getStartTime() + " to " + item.getEndTime());
+            final Datum item = list.get(i);
+
             myviewholder.name.setText(item.getName());
 
+            myviewholder.timing.setText("Open hour : " + item.getStartTime() + " to " + item.getEndTime());
+
+            myviewholder.name.setText(item.getName());
 
             DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).cacheInMemory(true).resetViewBeforeLoading(false).build();
+
             ImageLoader loader = ImageLoader.getInstance();
+
             loader.displayImage(item.getImage(), myviewholder.circle, options);
 
+            myviewholder.mor.setText(item.getCity());
+
+            final StringBuilder spe  = new StringBuilder();
+
+            for (int j = 0; j < item.getSpeciality().size(); j++) {
+
+
+                spe.append(", ").append(item.getSpeciality().get(j).getName());
+            }
+
+
+            myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent i = new Intent(context, LabDetails.class);
+                    i.putExtra("name", item.getName());
+                    i.putExtra("image", item.getImage());
+                    i.putExtra("timing", item.getStartTime() + "-" + item.getEndTime());
+                    i.putExtra("fee", item.getFee());
+                    i.putExtra("address", item.getAddress() + "," + item.getCity() + "," + item.getState());
+                    i.putExtra("spec", spe.toString());
+                    i.putExtra("id", item.getId());
+                    context.startActivity(i);
+
+
+                }
+            });
 
         }
 
@@ -172,7 +203,7 @@ public class Labs extends Fragment {
             CircleImageView circle;
 
 
-            public Myviewholder(@NonNull View itemView) {
+            public Myviewholder(@NonNull final View itemView) {
                 super(itemView);
 
                 name = itemView.findViewById(R.id.name);
@@ -190,14 +221,7 @@ public class Labs extends Fragment {
                     public void onClick(View v) {
 
 
-                        Intent i = new Intent(context, LabDetails.class);
-                        i.putExtra("name", list.get(0).getName());
-                        i.putExtra("image", list.get(0).getImage());
-                        i.putExtra("timing", list.get(0).getStartTime() + "-" + list.get(0).getEndTime());
-                        i.putExtra("fee", list.get(0).getFee());
-                        i.putExtra("address", list.get(0).getAddress() + "," + list.get(0).getCity() + "," + list.get(0).getState());
-                        //i.putExtra("spec", list.get(0).getSpeciality());
-                        context.startActivity(i);
+
                     }
                 });
             }

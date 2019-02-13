@@ -57,7 +57,7 @@ public class Doctors extends Fragment {
 
         list = new ArrayList<>();
 
-       // lname = getArguments().getString("location");
+        // lname = getArguments().getString("location");
 
         grid = view.findViewById(R.id.grid);
 
@@ -143,7 +143,7 @@ public class Doctors extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull GridAdapter.Myviewholder myviewholder, int i) {
 
-            Datum item = list.get(i);
+            final Datum item = list.get(i);
 
             myviewholder.name.setText(item.getName());
             myviewholder.gernal.setText(item.getDesignation());
@@ -154,10 +154,15 @@ public class Doctors extends Fragment {
             ImageLoader loader = ImageLoader.getInstance();
             loader.displayImage(item.getImage(), myviewholder.circleImageView, options);
 
-          //  SharePreferenceUtils.getInstance().saveString("location" , item.getId());
+            myviewholder.mor.setText(item.getCity());
 
-          // myviewholder.mor.setText(lname);
+            final StringBuilder spe = new StringBuilder();
 
+            for (int j = 0; j < item.getSpeciality().size(); j++) {
+
+
+                spe.append(", ").append(item.getSpeciality().get(j).getName());
+            }
 
 
             myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -165,17 +170,20 @@ public class Doctors extends Fragment {
                 public void onClick(View v) {
 
                     Intent i = new Intent(context, DoctorProfile.class);
-                    i.putExtra("name", list.get(0).getName());
-                    i.putExtra("desi", list.get(0).getDesignation());
-                    i.putExtra("exp", list.get(0).getExperience() + " years of Experience ");
-                    i.putExtra("rating", list.get(0).getRating());
-                    i.putExtra("image", list.get(0).getImage());
-                    i.putExtra("timing", list.get(0).getStartTime() + "-" + list.get(0).getEndTime());
-                    i.putExtra("fee", list.get(0).getFee() + " / Seesion ");
-                    i.putExtra("hopital", list.get(0).getHospital());
-                    i.putExtra("address", list.get(0).getAddress() + "," + list.get(0).getCity() + "," + list.get(0).getState());
-                    //i.putExtra("spec", list.get(0).getSpeciality());
+                    i.putExtra("name", item.getName());
+                    i.putExtra("desi", item.getDesignation());
+                    i.putExtra("exp", item.getExperience() + " years of Experience ");
+                    i.putExtra("rating", item.getRating());
+                    i.putExtra("image", item.getImage());
+                    i.putExtra("timing", item.getStartTime() + "-" + item.getEndTime());
+                    i.putExtra("fee", item.getFee() + " / Seesion ");
+                    i.putExtra("hopital", item.getHospital());
+                    i.putExtra("address", item.getAddress() + "," + item.getCity() + "," + item.getState());
+                    i.putExtra("spec", spe.toString());
+                    i.putExtra("id" , item.getId());
+
                     context.startActivity(i);
+
 
                 }
             });
