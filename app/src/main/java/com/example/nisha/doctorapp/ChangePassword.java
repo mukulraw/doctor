@@ -58,65 +58,75 @@ public class ChangePassword extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        String n = np.getText().toString().trim();
-                        String c = cp.getText().toString().trim();
 
-                        if (n.length()>3){
+                        if (cd.isConnectingToInternet()){
 
-                            if (n.equals(c)){
+                            String n = np.getText().toString().trim();
+                            String c = cp.getText().toString().trim();
 
-                                bar.setVisibility(View.VISIBLE);
+                            if (n.length()>3){
 
-                                Bean b = (Bean)getApplicationContext();
+                                if (n.equals(c)){
 
-                                Retrofit retrofit = new Retrofit.Builder()
-                                        .baseUrl(b.BaseUrl)
-                                        .addConverterFactory(ScalarsConverterFactory.create())
-                                        .addConverterFactory(GsonConverterFactory.create())
-                                        .build();
+                                    bar.setVisibility(View.VISIBLE);
 
-                                AllApiInterface cr = retrofit.create(AllApiInterface.class);
-                                Call<ChangeBean> call = cr.chanage(b.userid ,n );
-                                call.enqueue(new Callback<ChangeBean>() {
-                                    @Override
-                                    public void onResponse(Call<ChangeBean> call, Response<ChangeBean> response) {
+                                    Bean b = (Bean)getApplicationContext();
 
-                                        if (Objects.equals(response.body().getStatus(),"1")){
+                                    Retrofit retrofit = new Retrofit.Builder()
+                                            .baseUrl(b.BaseUrl)
+                                            .addConverterFactory(ScalarsConverterFactory.create())
+                                            .addConverterFactory(GsonConverterFactory.create())
+                                            .build();
 
-                                            Toast.makeText(ChangePassword.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    AllApiInterface cr = retrofit.create(AllApiInterface.class);
+                                    Call<ChangeBean> call = cr.chanage(b.userid ,n );
+                                    call.enqueue(new Callback<ChangeBean>() {
+                                        @Override
+                                        public void onResponse(Call<ChangeBean> call, Response<ChangeBean> response) {
 
-                                            edit.putString("password" , np.getText().toString());
-                                            edit.apply();
+                                            if (Objects.equals(response.body().getStatus(),"1")){
 
-                                            np.setText("");
-                                            cp.setText("");
-                                            finish();
+                                                Toast.makeText(ChangePassword.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                                                edit.putString("password" , np.getText().toString());
+                                                edit.apply();
+
+                                                np.setText("");
+                                                cp.setText("");
+                                                finish();
 
 
-                                        }else {
-                                            Toast.makeText(ChangePassword.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }else {
+                                                Toast.makeText(ChangePassword.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            bar.setVisibility(View.GONE);
                                         }
 
-                                        bar.setVisibility(View.GONE);
-                                    }
+                                        @Override
+                                        public void onFailure(Call<ChangeBean> call, Throwable t) {
 
-                                    @Override
-                                    public void onFailure(Call<ChangeBean> call, Throwable t) {
+                                            bar.setVisibility(View.GONE);
 
-                                        bar.setVisibility(View.GONE);
+                                        }
+                                    });
 
-                                    }
-                                });
 
+                                }else {
+                                    Toast.makeText(ChangePassword.this, "Password didn't match", Toast.LENGTH_SHORT).show();
+                                }
 
                             }else {
-                                Toast.makeText(ChangePassword.this, "Password didn't match", Toast.LENGTH_SHORT).show();
+
+                                Toast.makeText(ChangePassword.this, "Please enter atleat 4 digits password", Toast.LENGTH_SHORT).show();
                             }
 
                         }else {
 
-                            Toast.makeText(ChangePassword.this, "Please enter atleat 4 digits password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangePassword.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
                         }
+
+
 
                     }
                 });

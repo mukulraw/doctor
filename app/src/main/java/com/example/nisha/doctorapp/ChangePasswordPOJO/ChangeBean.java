@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class ChangeBean {
 
-
     @SerializedName("message")
     @Expose
     private String message;

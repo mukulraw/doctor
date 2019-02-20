@@ -56,7 +56,6 @@ public class MyBooking extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_booking);
 
-
         cd = new ConnectionDetector(MyBooking.this);
 
         bar = findViewById(R.id.progress);
@@ -75,7 +74,6 @@ public class MyBooking extends AppCompatActivity {
             }
         });
 
-
         grid = findViewById(R.id.grid);
 
         manager = new GridLayoutManager(getApplicationContext(), 1);
@@ -88,47 +86,54 @@ public class MyBooking extends AppCompatActivity {
 
         grid.setLayoutManager(manager);
 
+        if (cd.isConnectingToInternet()){
 
-        bar.setVisibility(View.VISIBLE);
+            bar.setVisibility(View.VISIBLE);
 
-        Bean b = (Bean) getApplicationContext();
+            Bean b = (Bean) getApplicationContext();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(b.BaseUrl)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(b.BaseUrl)
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        AllApiInterface cr = retrofit.create(AllApiInterface.class);
+            AllApiInterface cr = retrofit.create(AllApiInterface.class);
 
-        Call<AppointmentBean> call = cr.appointment(b.userid);
+            Call<AppointmentBean> call = cr.appointment(b.userid);
 
-        call.enqueue(new Callback<AppointmentBean>() {
-            @Override
-            public void onResponse(Call<AppointmentBean> call, Response<AppointmentBean> response) {
-
-
-                if (Objects.equals(response.body().getStatus(), "1")) {
-
-                    adapter.setgrid(response.body().getData().getAppointmentHistory());
+            call.enqueue(new Callback<AppointmentBean>() {
+                @Override
+                public void onResponse(Call<AppointmentBean> call, Response<AppointmentBean> response) {
 
 
-                } else {
+                    if (Objects.equals(response.body().getStatus(), "1")) {
 
-                    Toast.makeText(MyBooking.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        adapter.setgrid(response.body().getData().getAppointmentHistory());
+
+
+                    } else {
+
+                        Toast.makeText(MyBooking.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    bar.setVisibility(View.GONE);
                 }
 
-                bar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<AppointmentBean> call, Throwable t) {
+                @Override
+                public void onFailure(Call<AppointmentBean> call, Throwable t) {
 
 
-                bar.setVisibility(View.GONE);
+                    bar.setVisibility(View.GONE);
 
-            }
-        });
+                }
+            });
+
+
+        }else {
+            Toast.makeText(this, "No Internet COnnection", Toast.LENGTH_SHORT).show();
+        }
+
 
 
     }

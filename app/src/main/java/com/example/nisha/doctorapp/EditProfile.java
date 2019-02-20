@@ -42,10 +42,15 @@ public class EditProfile extends AppCompatActivity {
 
     ProgressBar bar;
 
+    ConnectionDetector cd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        cd = new ConnectionDetector(EditProfile.this);
+
         name = findViewById(R.id.name);
         age = findViewById(R.id.age);
         submit = findViewById(R.id.submit);
@@ -96,60 +101,68 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final String n = name.getText().toString();
-                final String a = age.getText().toString();
-                g = toggleSwitch.getCheckedTogglePosition();
+                if (cd.isConnectingToInternet()){
 
-                if (g == 0) {
-                    gender = "Male";
-                }
+                    final String n = name.getText().toString();
+                    final String a = age.getText().toString();
+                    g = toggleSwitch.getCheckedTogglePosition();
 
-                if (g == 1) {
-                    gender = "Female";
-                }
+                    if (g == 0) {
+                        gender = "Male";
+                    }
 
-                bar.setVisibility(View.VISIBLE);
+                    if (g == 1) {
+                        gender = "Female";
+                    }
 
-                Bean b = (Bean)getApplicationContext();
+                    bar.setVisibility(View.VISIBLE);
 
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(b.BaseUrl)
-                        .addConverterFactory(ScalarsConverterFactory.create())
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+                    Bean b = (Bean)getApplicationContext();
 
-                AllApiInterface cr = retrofit.create(AllApiInterface.class);
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(b.BaseUrl)
+                            .addConverterFactory(ScalarsConverterFactory.create())
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
 
-                Call<EditProfileBean> call = cr.edit(b.userid ,n , gender,a);
+                    AllApiInterface cr = retrofit.create(AllApiInterface.class);
 
-                call.enqueue(new Callback<EditProfileBean>() {
-                    @Override
-                    public void onResponse(Call<EditProfileBean> call, Response<EditProfileBean> response) {
+                    Call<EditProfileBean> call = cr.edit(b.userid ,n , gender,a);
 
-                        if (Objects.equals(response.body().getStatus() , "1")){
+                    call.enqueue(new Callback<EditProfileBean>() {
+                        @Override
+                        public void onResponse(Call<EditProfileBean> call, Response<EditProfileBean> response) {
 
-                            Toast.makeText(EditProfile.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            if (Objects.equals(response.body().getStatus() , "1")){
 
-                            name.setText("");
-                            age.setText("");
-                            finish();
+                                Toast.makeText(EditProfile.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                                name.setText("");
+                                age.setText("");
+                                finish();
 
 
-                        }else {
+                            }else {
 
-                            Toast.makeText(EditProfile.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EditProfile.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            bar.setVisibility(View.GONE);
                         }
 
-                        bar.setVisibility(View.GONE);
-                    }
+                        @Override
+                        public void onFailure(Call<EditProfileBean> call, Throwable t) {
 
-                    @Override
-                    public void onFailure(Call<EditProfileBean> call, Throwable t) {
+                            bar.setVisibility(View.GONE);
 
-                        bar.setVisibility(View.GONE);
+                        }
+                    });
 
-                    }
-                });
+
+                }else {
+                    Toast.makeText(EditProfile.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                }
+
 
 
             }

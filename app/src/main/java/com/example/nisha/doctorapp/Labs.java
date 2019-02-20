@@ -46,11 +46,15 @@ public class Labs extends Fragment {
 
     List<Datum> list;
 
+    ConnectionDetector cd;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.labs, container, false);
+
+        cd = new ConnectionDetector(getContext());
 
         list = new ArrayList<>();
 
@@ -66,49 +70,54 @@ public class Labs extends Fragment {
 
         bar = view.findViewById(R.id.progress);
 
-        bar.setVisibility(View.VISIBLE);
 
-        Bean b = (Bean) getContext().getApplicationContext();
+        if (cd.isConnectingToInternet()) {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(b.BaseUrl)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+            bar.setVisibility(View.VISIBLE);
 
-        AllApiInterface cr = retrofit.create(AllApiInterface.class);
+            Bean b = (Bean) getContext().getApplicationContext();
 
-        Call<LabDetailBean> call = cr.labdetail();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(b.BaseUrl)
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        call.enqueue(new Callback<LabDetailBean>() {
-            @Override
-            public void onResponse(Call<LabDetailBean> call, Response<LabDetailBean> response) {
+            AllApiInterface cr = retrofit.create(AllApiInterface.class);
 
+            Call<LabDetailBean> call = cr.labdetail();
 
-                if (Objects.equals(response.body().getStatus(), "1")) {
-
-
-                    adapter.setgrid(response.body().getData());
+            call.enqueue(new Callback<LabDetailBean>() {
+                @Override
+                public void onResponse(Call<LabDetailBean> call, Response<LabDetailBean> response) {
 
 
+                    if (Objects.equals(response.body().getStatus(), "1")) {
 
-                } else {
 
-                    Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        adapter.setgrid(response.body().getData());
+
+
+                    } else {
+
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    bar.setVisibility(View.GONE);
                 }
 
-                bar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<LabDetailBean> call, Throwable t) {
+                @Override
+                public void onFailure(Call<LabDetailBean> call, Throwable t) {
 
 
-                bar.setVisibility(View.GONE);
+                    bar.setVisibility(View.GONE);
 
-            }
-        });
+                }
+            });
 
+        } else {
+            Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
 
         return view;
     }
@@ -155,7 +164,7 @@ public class Labs extends Fragment {
 
             myviewholder.mor.setText(item.getCity());
 
-            final StringBuilder spe  = new StringBuilder();
+            final StringBuilder spe = new StringBuilder();
 
             for (int j = 0; j < item.getSpeciality().size(); j++) {
 
@@ -184,7 +193,7 @@ public class Labs extends Fragment {
 
         }
 
-        public void setgrid(List<Datum>list){
+        public void setgrid(List<Datum> list) {
 
             this.list = list;
             notifyDataSetChanged();
@@ -219,7 +228,6 @@ public class Labs extends Fragment {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
 
 
                     }

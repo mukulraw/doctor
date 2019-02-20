@@ -48,60 +48,60 @@ public class Forget extends AppCompatActivity {
 
                 if (cd.isConnectingToInternet()){
 
+                    String e = email.getText().toString();
+
+                    if (e.length() > 0) {
+
+                        // bar.setVisibility(View.VISIBLE);
+
+                        Bean bv = (Bean)getApplicationContext();
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(bv.BaseUrl)
+                                .addConverterFactory(ScalarsConverterFactory.create())
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        AllApiInterface cr = retrofit.create(AllApiInterface.class);
+
+                        Call<ForgetBean> call = cr.forgot(e);
+
+                        call.enqueue(new Callback<ForgetBean>() {
+                            @Override
+                            public void onResponse(Call<ForgetBean> call, Response<ForgetBean> response) {
+
+                                if (Objects.equals(response.body().getStatus(), "1")) {
+
+                                    Toast.makeText(Forget.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    finish();
+
+                                    email.setText("");
+                                } else {
+
+                                    Toast.makeText(Forget.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                bar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onFailure(Call<ForgetBean> call, Throwable t) {
+
+                                bar.setVisibility(View.GONE);
+
+                            }
+                        });
+
+
+                    } else {
+
+                        Toast.makeText(Forget.this, "Please enter a Email", Toast.LENGTH_SHORT).show();
+                    }
 
 
                 }else {
                     Toast.makeText(Forget.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
                 }
 
-                String e = email.getText().toString();
-
-                if (e.length() > 0) {
-
-                   // bar.setVisibility(View.VISIBLE);
-                    
-                    Bean bv = (Bean)getApplicationContext();
-
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl(bv.BaseUrl)
-                            .addConverterFactory(ScalarsConverterFactory.create())
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
-                    AllApiInterface cr = retrofit.create(AllApiInterface.class);
-
-                   Call<ForgetBean> call = cr.forgot(e);
-
-                    call.enqueue(new Callback<ForgetBean>() {
-                        @Override
-                        public void onResponse(Call<ForgetBean> call, Response<ForgetBean> response) {
-
-                            if (Objects.equals(response.body().getStatus(), "1")) {
-
-                                Toast.makeText(Forget.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                finish();
-
-                                email.setText("");
-                            } else {
-
-                                Toast.makeText(Forget.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-
-                            bar.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        public void onFailure(Call<ForgetBean> call, Throwable t) {
-
-                            bar.setVisibility(View.GONE);
-
-                        }
-                    });
-
-
-                } else {
-
-                    Toast.makeText(Forget.this, "Please enter a Email", Toast.LENGTH_SHORT).show();
-                }
 
 
             }

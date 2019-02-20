@@ -62,12 +62,9 @@ public class Splash extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
         }
 
-
         bar = findViewById(R.id.progress);
 
-
     }
-
 
     public static boolean hasPermissions(Context context, String... permissions) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {

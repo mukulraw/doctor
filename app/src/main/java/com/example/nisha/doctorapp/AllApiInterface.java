@@ -8,12 +8,15 @@ import com.example.nisha.doctorapp.ForgetPOJO.ForgetBean;
 import com.example.nisha.doctorapp.FreeSlotLabsPOJO.FreeLAbsBean;
 import com.example.nisha.doctorapp.FreeSlotPOJO.FreeslotBean;
 import com.example.nisha.doctorapp.GetAppointmentPOJO.AppointmentBean;
+import com.example.nisha.doctorapp.GetFeePOJO.GetBean;
+import com.example.nisha.doctorapp.GetLabfeePOJO.GetLabBean;
 import com.example.nisha.doctorapp.LabDetailsPOJO.LabDetailBean;
 import com.example.nisha.doctorapp.LocationPOJO.LocationBean;
 import com.example.nisha.doctorapp.LoginPOJO.LoginBean;
 import com.example.nisha.doctorapp.ProfilePOJO.ProfileBean;
 import com.example.nisha.doctorapp.ScheduleLabPOJO.SchedulelabBean;
 import com.example.nisha.doctorapp.SignupPOJO.SignupBean;
+import com.example.nisha.doctorapp.SpecialLabPOJO.SpeciallabBean;
 import com.example.nisha.doctorapp.TestPOJO.TestBean;
 import com.example.nisha.doctorapp.UpdateProfilePOJO.UpdateProfileBean;
 
@@ -112,7 +115,8 @@ public interface AllApiInterface {
             @Part("doctor_id") String userid,
             @Part("user_id") String sdlf ,
             @Part("date") String f ,
-            @Part("slot_id") String sd
+            @Part("slot_id") String sd,
+            @Part("fee") String fds
     );
 
 
@@ -130,7 +134,8 @@ public interface AllApiInterface {
             @Part("testId") String userid,
             @Part("user_id") String sdlf ,
             @Part("date") String f ,
-            @Part("slot_id") String sd
+            @Part("slot_id") String sd ,
+            @Part("fee") String dfs
     );
 
 
@@ -144,6 +149,36 @@ public interface AllApiInterface {
     Call<AppointmentBean> appointment(
             @Part("user_id") String userid
     );
+
+
+    @Multipart
+    @POST ("doctor/api/GetDrFeeBySlotId.php")
+    Call<GetBean> fees(
+            @Part("doctor_id") String sa ,
+            @Part("slotId") String sfdaf
+    );
+
+
+    @Multipart
+    @POST ("doctor/api/GetTestFeeBySlotId.php")
+    Call<GetLabBean> labfee(
+            @Part("testId") String sa ,
+            @Part("slotId") String sfdaf
+    );
+
+
+    @Multipart
+    @POST ("doctor/api/GetTestData.php")
+    Call<SpeciallabBean> spec(
+            @Part("testId") String sa
+    );
+
+
+
+
+
+
+
 
 
 }

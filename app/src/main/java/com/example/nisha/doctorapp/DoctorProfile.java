@@ -21,6 +21,7 @@ import com.example.nisha.doctorapp.DoctorsPOJO.DoctorBean;
 import com.example.nisha.doctorapp.EditProfilePOJO.EditProfileBean;
 import com.example.nisha.doctorapp.FreeSlotPOJO.Datum;
 import com.example.nisha.doctorapp.FreeSlotPOJO.FreeslotBean;
+import com.example.nisha.doctorapp.GetFeePOJO.GetBean;
 import com.example.nisha.doctorapp.LocationPOJO.LocationBean;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -149,7 +150,7 @@ public class DoctorProfile extends AppCompatActivity {
 
                 final TextView date = dialog.findViewById(R.id.date);
 
-                ImageView close = dialog.findViewById(R.id.close);
+                final ImageView close = dialog.findViewById(R.id.close);
 
                 final Spinner spinner = dialog.findViewById(R.id.spinner);
 
@@ -157,9 +158,51 @@ public class DoctorProfile extends AppCompatActivity {
 
                 Button ok = dialog.findViewById(R.id.ok);
 
+
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        dialog.dismiss();
+                    }
+                });
+
+
+
                 ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        final Dialog dialog = new Dialog(DoctorProfile.this);
+                        dialog.setContentView(R.layout.getfeedialog);
+                        dialog.setCancelable(true);
+                        dialog.show();
+
+                        final TextView fee = dialog.findViewById(R.id.fee);
+                        final Button play = dialog.findViewById(R.id.pay);
+                        final Button later = dialog.findViewById(R.id.later);
+                        final ImageView close = dialog.findViewById(R.id.close);
+
+                        final ProgressBar progress = dialog.findViewById(R.id.progress);
+
+
+
+                        later.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog.dismiss();
+                            }
+                        });
+
+                        close.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog.dismiss();
+                            }
+                        });
+
 
                         progress.setVisibility(View.VISIBLE);
 
@@ -173,16 +216,15 @@ public class DoctorProfile extends AppCompatActivity {
 
                         AllApiInterface cr = retrofit.create(AllApiInterface.class);
 
-                        Call<DoctorInsertBean> call = cr.insert( id , b.userid , date.getText().toString() , bb);
-                        call.enqueue(new Callback<DoctorInsertBean>() {
-                            @Override
-                            public void onResponse(Call<DoctorInsertBean> call, Response<DoctorInsertBean> response) {
+                        Call<GetBean> call = cr.fees( id , bb);
 
+                        call.enqueue(new Callback<GetBean>() {
+                            @Override
+                            public void onResponse(Call<GetBean> call, Response<GetBean> response) {
 
                                 if (Objects.equals(response.body().getStatus() , "1")){
 
-                                    Toast.makeText(DoctorProfile.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
+                                    fee.setText(response.body().getData().getEstimatedFee());
 
                                 }else {
 
@@ -190,27 +232,77 @@ public class DoctorProfile extends AppCompatActivity {
                                 }
 
                                 progress.setVisibility(View.GONE);
-                                dialog.dismiss();
+
                             }
 
                             @Override
-                            public void onFailure(Call<DoctorInsertBean> call, Throwable t) {
+                            public void onFailure(Call<GetBean> call, Throwable t) {
+
 
                                 progress.setVisibility(View.GONE);
+
 
                             }
                         });
 
 
-                    }
-                });
-                close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                        dialog.dismiss();
+                        play.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                if (cd.isConnectingToInternet()){
+
+                                    progress.setVisibility(View.VISIBLE);
+
+                                    Bean b = (Bean) getApplicationContext();
+
+                                    Retrofit retrofit = new Retrofit.Builder()
+                                            .baseUrl(b.BaseUrl)
+                                            .addConverterFactory(ScalarsConverterFactory.create())
+                                            .addConverterFactory(GsonConverterFactory.create())
+                                            .build();
+
+                                    AllApiInterface cr = retrofit.create(AllApiInterface.class);
+
+                                    Call<DoctorInsertBean> call = cr.insert( id , b.userid , date.getText().toString() , bb ,fee.getText().toString() );
+                                    call.enqueue(new Callback<DoctorInsertBean>() {
+                                        @Override
+                                        public void onResponse(Call<DoctorInsertBean> call, Response<DoctorInsertBean> response) {
+
+
+                                            if (Objects.equals(response.body().getStatus() , "1")){
+
+                                                Toast.makeText(DoctorProfile.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                                            }else {
+
+                                                Toast.makeText(DoctorProfile.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            progress.setVisibility(View.GONE);
+                                            dialog.dismiss();
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<DoctorInsertBean> call, Throwable t) {
+
+                                            progress.setVisibility(View.GONE);
+
+                                        }
+                                    });
+                                }else {
+                                    Toast.makeText(DoctorProfile.this,"No Internet Connection" ,  Toast.LENGTH_SHORT).show();
+                                }
+
+
+                            }
+                        });
+
                     }
                 });
+
+
 
 
                 date.setOnClickListener(new View.OnClickListener() {
@@ -244,69 +336,78 @@ public class DoctorProfile extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
 
+                                if (cd.isConnectingToInternet()){
 
-                                String day = String.valueOf(picker.getDayOfMonth());
-                                String month = String.valueOf(picker.getMonth() + 1);
-                                String year = String.valueOf(picker.getYear());
+                                    String day = String.valueOf(picker.getDayOfMonth());
+                                    String month = String.valueOf(picker.getMonth() + 1);
+                                    String year = String.valueOf(picker.getYear());
 
-                                String f = year + "-" + month + "-" + day;
+                                    String f = year + "-" + month + "-" + day;
 
-                                date.setText(f);
-
-
-                                progress.setVisibility(View.VISIBLE);
-
-                                Bean b = (Bean) getApplicationContext();
-
-                                Retrofit retrofit = new Retrofit.Builder()
-                                        .baseUrl(b.BaseUrl)
-                                        .addConverterFactory(ScalarsConverterFactory.create())
-                                        .addConverterFactory(GsonConverterFactory.create())
-                                        .build();
-
-                                AllApiInterface cr = retrofit.create(AllApiInterface.class);
-
-                                Call<FreeslotBean> call = cr.free( id,date.getText().toString());
-
-                                call.enqueue(new Callback<FreeslotBean>() {
-                                    @Override
-                                    public void onResponse(Call<FreeslotBean> call, Response<FreeslotBean> response) {
+                                    date.setText(f);
 
 
-                                        if (response.body().getStatus().equals("1")) {
+                                    progress.setVisibility(View.VISIBLE);
+
+                                    Bean b = (Bean) getApplicationContext();
+
+                                    Retrofit retrofit = new Retrofit.Builder()
+                                            .baseUrl(b.BaseUrl)
+                                            .addConverterFactory(ScalarsConverterFactory.create())
+                                            .addConverterFactory(GsonConverterFactory.create())
+                                            .build();
+
+                                    AllApiInterface cr = retrofit.create(AllApiInterface.class);
+
+                                    Call<FreeslotBean> call = cr.free( id,date.getText().toString());
+
+                                    call.enqueue(new Callback<FreeslotBean>() {
+                                        @Override
+                                        public void onResponse(Call<FreeslotBean> call, Response<FreeslotBean> response) {
 
 
-                                            for (int i = 0; i < response.body().getData().size(); i++) {
+                                            if (response.body().getStatus().equals("1")) {
 
 
-                                                finalLi.add(response.body().getData().get(i).getTimeSlot());
-                                                finalLis.add(response.body().getData().get(i).getId());
+                                                for (int i = 0; i < response.body().getData().size(); i++) {
+
+
+                                                    finalLi.add(response.body().getData().get(i).getTimeSlot());
+                                                    finalLis.add(response.body().getData().get(i).getId());
+                                                }
+
+                                                //list.clear();
+                                                //li.clear();
+
+                                                ArrayAdapter dataAdapter = new ArrayAdapter(DoctorProfile.this, android.R.layout.simple_spinner_item, finalLi);
+
+                                                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                                                spinner.setAdapter(dataAdapter);
+
+
                                             }
 
-                                            //list.clear();
-                                            //li.clear();
+                                            progress.setVisibility(View.GONE);
 
-                                            ArrayAdapter dataAdapter = new ArrayAdapter(DoctorProfile.this, android.R.layout.simple_spinner_item, finalLi);
-
-                                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                                            spinner.setAdapter(dataAdapter);
-
-
+                                            dialog.dismiss();
                                         }
 
-                                        progress.setVisibility(View.GONE);
+                                        @Override
+                                        public void onFailure(Call<FreeslotBean> call, Throwable t) {
 
-                                        dialog.dismiss();
-                                    }
+                                            progress.setVisibility(View.GONE);
 
-                                    @Override
-                                    public void onFailure(Call<FreeslotBean> call, Throwable t) {
+                                        }
+                                    });
 
-                                        progress.setVisibility(View.GONE);
 
-                                    }
-                                });
+                                }else {
+
+                                    Toast.makeText(DoctorProfile.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                                }
+
+
 
 
                                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

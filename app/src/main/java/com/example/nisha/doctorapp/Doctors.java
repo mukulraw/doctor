@@ -48,12 +48,17 @@ public class Doctors extends Fragment {
 
     String lname;
 
+    ConnectionDetector cd;
+
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.doctors, container, false);
+
+
+        cd = new ConnectionDetector(getContext());
 
         list = new ArrayList<>();
 
@@ -71,48 +76,55 @@ public class Doctors extends Fragment {
 
         bar = view.findViewById(R.id.progress);
 
-        bar.setVisibility(View.VISIBLE);
+        if (cd.isConnectingToInternet()) {
 
-        Bean b = (Bean) getContext().getApplicationContext();
+            bar.setVisibility(View.VISIBLE);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(b.BaseUrl)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+            Bean b = (Bean) getContext().getApplicationContext();
 
-        AllApiInterface cr = retrofit.create(AllApiInterface.class);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(b.BaseUrl)
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        Call<DoctorBean> call = cr.doctorprofile();
+            AllApiInterface cr = retrofit.create(AllApiInterface.class);
 
-        call.enqueue(new Callback<DoctorBean>() {
-            @Override
-            public void onResponse(Call<DoctorBean> call, Response<DoctorBean> response) {
+            Call<DoctorBean> call = cr.doctorprofile();
+
+            call.enqueue(new Callback<DoctorBean>() {
+                @Override
+                public void onResponse(Call<DoctorBean> call, Response<DoctorBean> response) {
 
 
-                if (Objects.equals(response.body().getStatus(), "1")) {
+                    if (Objects.equals(response.body().getStatus(), "1")) {
 
-                    adapter.setgrid(response.body().getData());
+                        adapter.setgrid(response.body().getData());
 
-                    Log.d("respponse", "res");
+                        Log.d("respponse", "res");
 
-                } else {
+                    } else {
 
-                    Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    bar.setVisibility(View.GONE);
                 }
 
-                bar.setVisibility(View.GONE);
-            }
+                @Override
+                public void onFailure(Call<DoctorBean> call, Throwable t) {
 
-            @Override
-            public void onFailure(Call<DoctorBean> call, Throwable t) {
+                    Log.d("failure", t.toString());
 
-                Log.d("failure", t.toString());
+                    bar.setVisibility(View.GONE);
 
-                bar.setVisibility(View.GONE);
+                }
+            });
 
-            }
-        });
+        } else {
+
+            Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
 
 
         return view;
@@ -180,7 +192,7 @@ public class Doctors extends Fragment {
                     i.putExtra("hopital", item.getHospital());
                     i.putExtra("address", item.getAddress() + "," + item.getCity() + "," + item.getState());
                     i.putExtra("spec", spe.toString());
-                    i.putExtra("id" , item.getId());
+                    i.putExtra("id", item.getId());
 
                     context.startActivity(i);
 

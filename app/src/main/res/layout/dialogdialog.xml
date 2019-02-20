@@ -83,9 +83,9 @@
             android:layout_marginTop="30dp"
             android:id="@+id/ok"
             android:textColor="#fff"
-            android:text="OK"
+            android:text="Get fee"
             android:textSize="18sp"
-            android:layout_marginBottom="18dp"/>
+            android:layout_marginBottom="30dp"/>
 
 
 

@@ -25,7 +25,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Location extends AppCompatActivity {
 
-
     Spinner spinner;
 
     List<String> list = new ArrayList<>();
@@ -40,10 +39,14 @@ public class Location extends AppCompatActivity {
 
     ProgressBar progress;
 
+    ConnectionDetector cd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
+
+        cd = new ConnectionDetector(Location.this);
 
         list = new ArrayList<>();
         lid = new ArrayList<>();
@@ -51,55 +54,65 @@ public class Location extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         progress = findViewById(R.id.progress);
 
-        Bean b = (Bean) getApplicationContext();
+        if (cd.isConnectingToInternet()){
 
-        progress.setVisibility(View.VISIBLE);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(b.BaseUrl)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+            Bean b = (Bean) getApplicationContext();
 
-        AllApiInterface cr = retrofit.create(AllApiInterface.class);
+            progress.setVisibility(View.VISIBLE);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(b.BaseUrl)
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        Call<LocationBean> call = cr.getLocations();
+            AllApiInterface cr = retrofit.create(AllApiInterface.class);
 
-        call.enqueue(new Callback<LocationBean>() {
-            @Override
-            public void onResponse(Call<LocationBean> call, Response<LocationBean> response) {
+            Call<LocationBean> call = cr.getLocations();
+
+            call.enqueue(new Callback<LocationBean>() {
+                @Override
+                public void onResponse(Call<LocationBean> call, Response<LocationBean> response) {
 
 
-                if (response.body().getStatus().equals("1")) {
+                    if (response.body().getStatus().equals("1")) {
 
-                    list.clear();
-                    lid.clear();
+                        list.clear();
+                        lid.clear();
 
-                    list.add("Choose Location");
+                        list.add("Choose Location");
 
-                    for (int i = 0; i < response.body().getData().size(); i++) {
-                        list.add(response.body().getData().get(i).getName());
-                        lid.add(response.body().getData().get(i).getId());
+                        for (int i = 0; i < response.body().getData().size(); i++) {
+                            list.add(response.body().getData().get(i).getName());
+                            lid.add(response.body().getData().get(i).getId());
+                        }
+
+
+                        ArrayAdapter dataAdapter = new ArrayAdapter(Location.this, android.R.layout.simple_spinner_item, list);
+
+                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                        spinner.setAdapter(dataAdapter);
+
+
                     }
 
-
-                    ArrayAdapter dataAdapter = new ArrayAdapter(Location.this, android.R.layout.simple_spinner_item, list);
-
-                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                    spinner.setAdapter(dataAdapter);
-
+                    progress.setVisibility(View.GONE);
 
                 }
 
-                progress.setVisibility(View.GONE);
+                @Override
+                public void onFailure(Call<LocationBean> call, Throwable t) {
+                    progress.setVisibility(View.GONE);
+                }
+            });
 
-            }
 
-            @Override
-            public void onFailure(Call<LocationBean> call, Throwable t) {
-                progress.setVisibility(View.GONE);
-            }
-        });
+
+        }else {
+
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
+
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
